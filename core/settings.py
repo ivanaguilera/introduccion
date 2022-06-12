@@ -1,20 +1,23 @@
 
 from pathlib import Path
+import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+import environ         # para manejo de variables de entorno
+
+# lectura de variables de entorno
+env = environ.Env()
+environ.Env.read_env()
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECRET_KEY = 'django-insecure-^529xwv_h0y@f278az758*nh#d88ivv=c7g11n9c1wz0@8a$2+'
+SECRET_KEY = os.environ.get('SECRET_KEY') # queda protegida
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+DEBUG = os.environ.get('DEBUG')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^529xwv_h0y@f278az758*nh#d88ivv=c7g11n9c1wz0@8a$2+'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] # '*' significa todos los host o cualquier host en producció 
+                      # se debe restringir
 
 
 # Application definition
@@ -26,6 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'core'
 ]
 
 MIDDLEWARE = [
@@ -43,7 +48,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],   # debe apuntar a la carpeta templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
